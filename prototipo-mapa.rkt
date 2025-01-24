@@ -8,27 +8,27 @@
       (list
          (ambiente
             "Sala dos Pilares"
-            (delay (displayln "Pilares!"))
+            "Pilares!"
             (list "Galeria" "A")
          )
          (ambiente
             "Galeria"
-            (delay (displayln "Fotos!"))
-            (list "Sala Principal")
+            "Fotos!"
+            (list "Sala dos Pilares")
          )
          (ambiente
             "A"
-            (delay (displayln "A!"))
+            "A!"
             (list "Sala dos Pilares" "B" "C")
          )
          (ambiente
             "B"
-            (delay (displayln "B!"))
+            "B!"
             (list "A" "C")
          )
          (ambiente
             "C"
-            (delay (displayln "C!"))
+            "C!"
             (list "A" "B")
          )
       )
@@ -84,9 +84,13 @@
          "Sala dos Pilares"
          "A"
          "B"
-         "A"
+         "C"
          "B"
          "C"
+         "A"
+         "Sala dos Pilares"
+         "Galeria"
+         "Sala dos Pilares"
       )
    )
 )
@@ -97,7 +101,7 @@
           (not (empty? localizacao))
           (not (empty? lista-visitar))
        )
-         (force
+         (displayln
             (ambiente-extra
                (first
                   (retorna-ambiente-atual localizacao)
@@ -113,13 +117,3 @@
 )
 
 (teste-inicializador)
-
-(define localizacao (localizacao-inicial))
-(retorna-ambiente-atual localizacao)
-(encontra-conexao
-   (first
-      (retorna-ambiente-atual localizacao)
-   )
-   "Galeria"
-)
-(visitar localizacao "Galeria")
