@@ -1,34 +1,34 @@
 #lang racket
 
-(struct navegador (ambientes ambiente-atual)#:transparent)
-(struct ambiente (nome extra conexoes)#:transparent)
+(struct navegador (ambientes ambiente-atual))
+(struct ambiente (nome extra conexoes))
 
 (define (localizacao-inicial)
    (navegador
       (list
          (ambiente
             "Sala dos Pilares"
-            (delay (displayln "Pilares!"))
+            (delay (display "Pilares!"))
             (list "Galeria" "A")
          )
          (ambiente
             "Galeria"
-            (delay (displayln "Fotos!"))
+            (delay (display "Fotos!"))
             (list "Sala Principal")
          )
          (ambiente
             "A"
-            (delay (displayln "A!"))
+            (delay (display "A!"))
             (list "Sala dos Pilares" "B" "C")
          )
          (ambiente
             "B"
-            (delay (displayln "B!"))
+            (delay (display "B!"))
             (list "A" "C")
          )
          (ambiente
             "C"
-            (delay (displayln "C!"))
+            (delay (display "C!"))
             (list "A" "B")
          )
       )
@@ -59,10 +59,10 @@
 
 (define (retorna-ambiente-atual localizacao)
    (filter
-      (λ (ambiente-da-lista)
+      (λ (ambiente)
          (equal?
             (navegador-ambiente-atual localizacao)
-            (ambiente-nome ambiente-da-lista)
+            (ambiente-nome ambiente)
          )
       )
       (navegador-ambientes localizacao)
@@ -71,7 +71,7 @@
 
 (define (encontra-conexao local nome-conexao)
    (filter
-      (λ (conexao-da-lista) (equal? conexao-da-lista nome-conexao))
+      (curry equal? (ambiente-nome local))
       (ambiente-conexoes local)
    )
 )
@@ -84,8 +84,8 @@
          "Sala dos Pilares"
          "A"
          "B"
+         "C"
          "A"
-         "B"
          "C"
       )
    )
@@ -93,10 +93,7 @@
 
 (define (teste-principal localizacao lista-visitar)
    (cond
-      [(and
-          (not (empty? localizacao))
-          (not (empty? lista-visitar))
-       )
+      [(not (empty? localizacao))
          (force
             (ambiente-extra
                (first
@@ -113,13 +110,3 @@
 )
 
 (teste-inicializador)
-
-(define localizacao (localizacao-inicial))
-(retorna-ambiente-atual localizacao)
-(encontra-conexao
-   (first
-      (retorna-ambiente-atual localizacao)
-   )
-   "Galeria"
-)
-(visitar localizacao "Galeria")
