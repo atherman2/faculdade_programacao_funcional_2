@@ -119,12 +119,48 @@
 
 (define (menu-inspecionar-mobilia)
     (display "O que você desejá fazer?")(newline)(newline)
-    (display "USAR - Usar um item")(newline)   
-    (display "PEGA - Pegar um item da mobília")(newline)
+    (display "USAR - Usar um objeto")(newline)   
+    (display "PEGA - Pegar os objetos da mobília")(newline)
     (display "ACAO - Fazer uma acao da mobília")(newline)
     (display "SELE - Voltar para a seleção de mobília")(newline)
     (display "VOLT - Sair da inspeção de mobílias")(newline)
     (string-upcase (read-line))
+)
+
+(define (pega-objetos inventario navegador mobilia0)
+    (define objetos (mobilia-objetos mobilia0))
+    (cond
+        [(empty? objetos)
+            (displayln "Não há itens a serem pegos na mobília!")
+            (inspecionar-mobilia inventario navegador mobilia0)
+        ]
+        [else
+            (define nova-mobilia
+                (struct-copy
+                    mobilia
+                    mobilia0
+                    [mobilia-objetos empty]
+                )
+            )
+            (define ambiente-atual (first (retorna-ambiente-atual navegador)))
+            (define mobilias (ambiente-mobilias ambiente-atual))
+            (define novo-mobilias
+                (cons nova-mobilia
+                    (remove-mobilia-da-lista
+                        mobilias
+                        (mobilia-nome mobilia0)
+                    )
+                )
+            )
+            (define novo-ambiente
+                (struct-copy
+                    ambiente
+                    ambiente-atual
+                    [ambiente-mobilias novo-mobilias]
+                )
+            )
+        ]
+    )
 )
 
 (define (seleciona-puzzle inventario navegador mobilia)

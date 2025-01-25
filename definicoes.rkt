@@ -52,8 +52,38 @@
 
 (define (encontra-mobilia ambiente nome-mobilia)
     (filter
-        (λ (mobilia-da-lista) (equal? nome-mobilia (string-upcase (mobilia-nome mobilia-da-lista))))
+        (λ (mobilia-da-lista)
+            (equal? nome-mobilia 
+                (string-upcase (mobilia-nome mobilia-da-lista))
+            )
+        )
         (ambiente-mobilias ambiente)
+    )
+)
+
+(define (remove-mobilia ambiente nome-mobilia)
+    (filter
+        (λ (mobilia-da-lista) 
+            (not
+                (equal? nome-mobilia
+                    (string-upcase (mobilia-nome mobilia-da-lista))
+                )
+            )
+        )
+        (ambiente-mobilias ambiente)
+    )
+)
+
+(define (remove-mobilia-da-lista mobilias nome-mobilia)
+    (filter
+        (λ (mobilia-da-lista) 
+            (not
+                (equal? nome-mobilia
+                    (string-upcase (mobilia-nome mobilia-da-lista))
+                )
+            )
+        )
+        (mobilias)
     )
 )
 
