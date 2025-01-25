@@ -122,3 +122,34 @@
         (retorna-ambiente-atual navegador)
     )
 )
+
+(struct mobilia (nome descricao objetos puzzles))
+
+(define (exibir_mobilia mobilia)
+  (for-each
+   (λ (x)
+     (cond
+       ;; Caso onde tem objetos mas não há puzzles
+       [(and (not (empty? (mobilia-objetos x))) (empty? (mobilia-puzzles x)))      
+        (display (string-append "Nome: " (mobilia-nome x) "\n"
+                               "Descrição: " (mobilia-descricao x) "\n"
+                               "Objetos na Mobilia: " (string-join (mobilia-objetos x) ", ") "\n\n"))]
+
+       ;; Caso onde tem puzzles mas não há objetos
+       [(and (empty? (mobilia-objetos x)) (not (empty? (mobilia-puzzles x))))      
+        (display (string-append "Nome: " (mobilia-nome x) "\n"
+                               "Descrição: " (mobilia-descricao x) "\n"
+                               "Puzzle: " (string-join (mobilia-puzzles x) ", ") "\n\n"))]
+
+       ;; Caso onde não tem nem objetos nem puzzles
+       [(and (empty? (mobilia-objetos x)) (empty? (mobilia-puzzles x)))
+        (display (string-append "Nome: " (mobilia-nome x) "\n"
+                               "Descrição: " (mobilia-descricao x) "\n\n"))]
+
+       ;; Caso padrão, em que há objetos e puzzles
+       [else
+        (display (string-append "Nome: " (mobilia-nome x) "\n"
+                               "Descrição: " (mobilia-descricao x) "\n"
+                               "Objetos na Mobilia: " (string-join (mobilia-objetos x) ", ") "\n"
+                               "Puzzle: " (string-join (mobilia-puzzles x) ", ") "\n\n"))]))
+   mobilia))
