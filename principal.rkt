@@ -12,7 +12,7 @@
         [(equal? escolha "USAR")]
         [(equal? escolha "VISI")]
         [(equal? escolha "SAIR")
-            (menu-confirmar-sair inventario navegador)
+            (confirmar-sair inventario navegador)
         ]
         [else (opcao-loop-principal-invalida inventario navegador)]
     )
@@ -27,7 +27,7 @@
     (string-upcase (read-line))
 )
 
-(define (menu-confirmar-sair inventario navegador)
+(define (confirmar-sair inventario navegador)
     (display "Você deseja realmente sair do escape room?")(newline)
     (display "Todo progresso será perdido")(newline)
     (display "S - Confirmar")(newline)
@@ -43,6 +43,28 @@
 (define (opcao-loop-principal-invalida inventario navegador)
     (display "Você digitou uma opção inválida!")(newline)(newline)
     (loop-principal inventario navegador)
+)
+
+(define (visitar inventario navegador)
+    (define escolha (menu-visitar navegador))
+    (define novo-navegador (novo-navegador-visitar navegador escolha))
+    (cond
+        [(equal? escolha "VOLT") (loop-principal inventario navegador)]
+        [(empty? novo-navegador)
+            (display "Você digitou uma opção inválida!")(newline)(newline)
+            (visitar inventario navegador)
+        ]
+        [else
+            (loop-principal inventario novo-navegador)
+        ]
+    )
+)
+
+(define (menu-visitar navegador)
+    (display "Qual sala você deseja visitar?")(newline)
+    (exibir-ambiente-atual navegador)
+    (display "Ou insira VOLT para voltar")(newline)(newline)
+    (string-string-upcase (read-line))
 )
 
 (define (inspecionar inventario navegador)
