@@ -4,17 +4,13 @@
 
 (provide loop-principal)
 
-(struct navegador (ambientes ambiente-atual))
-(struct ambiente (nome descricao mobilias conexoes))
-(struct puzzle (nome descricao funcao))
-(struct mobilia (nome descricao objetos puzzles))
-(struct objeto ( nome descricao utilizacao situacao-uso )#:transparent)
-
 (define (loop-principal inventario navegador)
     (exibir-ambiente-atual navegador)
     (define escolha (menu-acoes-loop-principal))
     (cond
-        [(equal? escolha "INSP")]
+        [(equal? escolha "INSP")
+            (inspecionar inventario navegador)
+        ]
         [(equal? escolha "USAR")]
         [(equal? escolha "VISI")]
         [(equal? escolha "SAIR")
@@ -74,7 +70,7 @@
 )
 
 (define (inspecionar inventario navegador)
-    (define ambiente-atual (retorna-ambiente-atual navegador))
+    (define ambiente-atual (first (retorna-ambiente-atual navegador)))
     (define mobilia-selecionada (menu-inspecionar ambiente-atual))
     (define mobilia-encontrada (encontra-mobilia ambiente-atual mobilia-selecionada))
     (cond
@@ -89,7 +85,18 @@
 
 (define (menu-inspecionar ambiente-atual)
     (display "Qual mobília você deseja inspecionar?")(newline)
-    (exibir-ambiente ambiente-atual)
+    (map
+        (λ (mobilia-da-lista)
+            (displayln
+                (string-append
+                    (mobilia-nome mobilia-da-lista)
+                    ": "
+                    (mobilia-descricao mobilia-da-lista)
+                )
+            )
+        )
+        (ambiente-mobilias ambiente-atual)
+    )
     (display "Ou insira VOLT para voltar")(newline)
     (string-upcase (read-line))
 )
@@ -154,13 +161,15 @@
     (map (λ (mobilia) (displayln (mobilia-nome mobilia))) (ambiente-mobilias ambiente))
     (newline)
     (display "É possível ir para as seguintes salas:")(newline)
-    (map displayln ambiente-conexoes)
+    (map displayln (ambiente-conexoes ambiente))
     (newline)
 )
 
 (define (exibir-ambiente-atual navegador)
     (exibir-ambiente
-        (retorna-ambiente-atual navegador)
+        (first
+            (retorna-ambiente-atual navegador)
+        )
     )
 )
 

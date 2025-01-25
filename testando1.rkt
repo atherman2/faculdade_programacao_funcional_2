@@ -3,12 +3,6 @@
 (require "definicoes.rkt")
 (require "principal.rkt")
 
-(struct navegador (ambientes ambiente-atual)#:transparent)
-(struct ambiente (nome descricao mobilias conexoes))
-(struct puzzle (nome descricao funcao))
-(struct mobilia (nome descricao objetos puzzles))
-(struct objeto ( nome descricao utilizacao situacao-uso )#:transparent)
-
 (define o1
     (objeto
         "o1"
@@ -43,7 +37,7 @@
         "A"
         "ambiente A"
         (list m1)
-        "B"
+        (list "B")
     )
 )
 
@@ -52,7 +46,7 @@
         "B"
         "ambiente B"
         (list m1)
-        "A"
+        (list "A")
     )
 )
 

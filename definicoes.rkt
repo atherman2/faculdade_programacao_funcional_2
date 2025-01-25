@@ -1,21 +1,14 @@
 #lang racket
 
 (provide
-    navegador
-    ambiente
-    mobilia
-    puzzle
-    novo-navegador-visitar
-    retorna-ambiente-atual
-    encontra-conexao
-    encontra-mobilia
-    encontra-puzzle
+    (all-defined-out)
 )
 
 (struct navegador (ambientes ambiente-atual))
 (struct ambiente (nome descricao mobilias conexoes))
 (struct mobilia (nome descricao objetos puzzles))
 (struct puzzle (nome descricao funcao))
+(struct objeto ( nome descricao utilizacao situacao-uso )#:transparent)
 
 (define (novo-navegador-visitar navegador0 nome-destino)
     (define conexao-encontrada
@@ -60,7 +53,7 @@
 (define (encontra-mobilia ambiente nome-mobilia)
     (filter
         (λ (mobilia-da-lista) (equal? nome-mobilia (string-upcase (mobilia-nome mobilia-da-lista))))
-        (ambiente-mobilias)
+        (ambiente-mobilias ambiente)
     )
 )
 
