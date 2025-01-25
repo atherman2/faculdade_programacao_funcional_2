@@ -12,11 +12,7 @@
 
 (define (exibir-inventario inventario)
   (for-each
-    display
-    (map (λ (x) (string-append
-            "Nome: " (item-nome x) "\n"
-            "Descrição: " (item-descricao x) "\n\n"))
-         inventario)))
+   (λ (x) (display (string-append "Nome: " (item-nome x) "\n" "Descrição: " (item-descricao x) "\n\n"))) inventario))
 
 (define inventario
   (list
