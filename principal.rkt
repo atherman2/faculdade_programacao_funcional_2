@@ -41,12 +41,8 @@
     (loop-principal inventario navegador)
 )
 
-(define (menu-inspecionar inventario navegador)
-    (define ambiente-atual (retorna-ambiente-atual navegador))
-    (display "Qual mobília você deseja inspecionar?")(newline)
-    (exibir-ambiente ambiente-atual)
-    (display "Ou insira VOLT para voltar")(newline)
-    (define mobilia-selecionada (string-upcase (read-line)))
+(define (inspecionar inventario navegador)
+    (define mobilia-selecionada (menu-inspecionar navegador))
     (define mobilia-encontrada (encontra-mobilia ambiente-atual mobilia-selecionada))
     (cond
         [(equal? mobilia-selecionada "VOLT") (loop-principal inventario navegador)]
@@ -54,12 +50,50 @@
             (display "Você digitou uma opção inválida!")(newline)(newline)
             (menu-inspecionar inventario navegador)
         ]
-        [else (inspecionar inventario navegador (first mobilia-encontrada))]
+        [else (inspecionar-mobilia inventario navegador (first mobilia-encontrada))]
     )
 )
 
-(define (inspecionar inventario navegador mobilia)
+(define (menu-inspecionar navegador)
+    (define ambiente-atual (retorna-ambiente-atual navegador))
+    (display "Qual mobília você deseja inspecionar?")(newline)
+    (exibir-ambiente ambiente-atual)
+    (display "Ou insira VOLT para voltar")(newline)
+    (string-upcase (read-line))
+)
 
+(define (inspecionar-mobilia inventario navegador mobilia)
+    (exibir-mobilia mobilia)
+    (define escolha (string-upcase (menu-inspecionar-mobilia)))
+    (cond
+        [(equal? escolha "USAR")]
+        [(equal? escolha "PEGA")]
+        [(equal? escolha "ACAO")]
+        [(equal? escolha "SELE") (inspecionar inventario navegador)]
+        [(equal? escolha "VOLT") (loop-principal inventario navegador)]
+    )
+)
+
+(define (menu-inspecionar-mobilia)
+    (display "O que você desejá fazer?")(newline)(newline)
+    (display "USAR - Usar um item")(newline)   
+    (display "PEGA - Pegar um item da mobília")(newline)
+    (display "ACAO - Fazer uma acao da mobília")(newline)
+    (display "SELE - Voltar para a seleção de mobília")(newline)
+    (display "VOLT - Sair da inspeção de mobílias")(newline)
+    (string-upcase (read-line))
+)
+
+(define (seleciona-puzzle inventario navegador mobilia)
+    (define escolha (menu-seleciona-puzzle mobilia))
+    ()
+)
+
+(define (menu-seleciona-puzzle mobilia)
+    (display "Qual ação você deseja realizar?")(newline)
+    (map exibir-puzzle (mobilia-puzzles mobilia))
+    (display "Ou insira VOLT para voltar")(newline)(newline)
+    (string-upcase (read-line))
 )
 
 (define (exibir-ambiente ambiente)

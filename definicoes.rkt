@@ -2,7 +2,7 @@
 
 (struct navegador (ambientes ambiente-atual))
 (struct ambiente (nome descricao mobilias conexoes))
-(struct mobilia (nome descricao objetos puzzle))
+(struct mobilia (nome descricao objetos puzzles))
 (struct puzzle (nome descricao funcao))
 
 (define (visitar navegador nome-destino)
