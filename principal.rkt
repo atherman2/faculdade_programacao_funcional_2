@@ -2,7 +2,13 @@
 
 (require "definicoes.rkt")
 
+(provide loop-principal)
+
+(struct navegador (ambientes ambiente-atual))
+(struct ambiente (nome descricao mobilias conexoes))
 (struct puzzle (nome descricao funcao))
+(struct mobilia (nome descricao objetos puzzles))
+(struct objeto ( nome descricao utilizacao situacao-uso )#:transparent)
 
 (define (loop-principal inventario navegador)
     (exibir-ambiente-atual navegador)
@@ -64,7 +70,7 @@
     (display "Qual sala você deseja visitar?")(newline)
     (exibir-ambiente-atual navegador)
     (display "Ou insira VOLT para voltar")(newline)(newline)
-    (string-string-upcase (read-line))
+    (string-upcase (read-line))
 )
 
 (define (inspecionar inventario navegador)
@@ -89,7 +95,7 @@
 )
 
 (define (inspecionar-mobilia inventario navegador mobilia)
-    (exibir_mobilia mobilia)
+    (exibir_mobilia1 mobilia)
     (define escolha (string-upcase (menu-inspecionar-mobilia)))
     (cond
         [(equal? escolha "USAR")]
@@ -125,7 +131,18 @@
 
 (define (menu-seleciona-puzzle mobilia)
     (display "Qual ação você deseja realizar?")(newline)
-    (map exibir-puzzle (mobilia-puzzles mobilia))
+    (map 
+        (λ (puzzle-da-lista)
+            (displayln
+                (string-append
+                    (puzzle-nome puzzle-da-lista)
+                    ": "
+                    (puzzle-descricao puzzle-da-lista)
+                )
+            )
+        )
+        (mobilia-puzzles mobilia)
+    )
     (display "Ou insira VOLT para voltar para a mobilia")(newline)(newline)
     (string-upcase (read-line))
 )
@@ -163,7 +180,7 @@
      (display
       (string-append "Nome: " (mobilia-nome x) "\n"
                      "Descrição: " (mobilia-descricao x) "\n"
-                     "Puzzle: " 
+                     "Ações: " 
                      (string-join (map puzzle-nome (mobilia-puzzles x)) ", ") "\n\n"))]
 
     ;; Caso onde não tem nem objetos nem puzzles
@@ -179,6 +196,6 @@
                      "Descrição: " (mobilia-descricao x) "\n"
                      "Objetos na Mobilia: " 
                      (string-join (map objeto-nome (mobilia-objetos x)) ", ") "\n"
-                     "Puzzle: " 
+                     "Ações: " 
                      (string-join (map puzzle-nome (mobilia-puzzles x)) ", ") "\n\n"))]))
 
