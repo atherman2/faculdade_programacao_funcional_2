@@ -4,25 +4,12 @@
 
 (struct objeto ( nome descricao utilizacao situacao-uso )#:transparent)
 
-(define (pegar_item item inventario) 
-  (cons item inventario))
+(define (pegar_objeto objeto inventario) 
+  (cons objeto inventario))
 
-(define (remove_objeto_inventario item inventario)
-  (filter (λ (x) (not (string=? (item-nome item) (item-nome x)))) inventario))
+(define (remove_objeto_inventario objeto inventario)
+  (filter (λ (x) (not (string=? (objeto-nome objeto) (objeto-nome x)))) inventario))
 
-(define (exibir-inventario inventario)
+(define (exibir_inventario inventario)
   (for-each
-   (λ (x) (display (string-append "Nome: " (item-nome x) "\n" "Descrição: " (item-descricao x) "\n\n"))) inventario))
-
-(define inventario
-  (list
-    (item "espada" "Uma espada brilhante" "cortar")
-    (item "escudo" "Um escudo resistente" "proteger")
-    (item "poção" "Uma poção de cura" "curar")))
-
-
-(remove_objeto_inventario (item "espada" "Uma espada brilhante" "cortar")  inventario)
-
-(pegar_item (item "Agua" "Uma poção de cura" "curar") inventario)
-
-(exibir-inventario inventario)
+   (λ (x) (display (string-append "Nome: " (objeto-nome x) "\n" "Descrição: " (objeto-descricao x) "\n\n"))) inventario))
