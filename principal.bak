@@ -44,8 +44,7 @@
 )
 
 (define (inspecionar inventario navegador)
-    (define ambiente-atual (retorna-ambiente-atual navegador))
-    (define mobilia-selecionada (menu-inspecionar ambiente-atual))
+    (define mobilia-selecionada (menu-inspecionar navegador))
     (define mobilia-encontrada (encontra-mobilia ambiente-atual mobilia-selecionada))
     (cond
         [(equal? mobilia-selecionada "VOLT") (loop-principal inventario navegador)]
@@ -57,7 +56,8 @@
     )
 )
 
-(define (menu-inspecionar ambiente-atual)
+(define (menu-inspecionar navegador)
+    (define ambiente-atual (retorna-ambiente-atual navegador))
     (display "Qual mobília você deseja inspecionar?")(newline)
     (exibir-ambiente ambiente-atual)
     (display "Ou insira VOLT para voltar")(newline)

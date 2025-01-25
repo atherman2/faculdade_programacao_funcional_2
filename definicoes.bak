@@ -14,11 +14,11 @@
 (struct mobilia (nome descricao objetos puzzles))
 (struct puzzle (nome descricao funcao))
 
-(define (visitar navegador0 nome-destino)
+(define (visitar navegador nome-destino)
     (define conexao-encontrada
         (encontra-conexao
             (first
-                (retorna-ambiente-atual navegador0)
+                (retorna-ambiente-atual navegador)
             )
             nome-destino
         )
@@ -28,7 +28,7 @@
         [else
             (struct-copy
                 navegador
-                navegador0
+                navegador
                 [ambiente-atual nome-destino]
             )
         ]
@@ -64,6 +64,6 @@
 (define (encontra-puzzle mobilia nome-puzzle)
     (filter
         (λ (puzzle-da-lista) (equal? nome-puzzle (puzzle-nome puzzle-da-lista)))
-        (mobilia-puzzles mobilia)
+        (mobilia-puzzle)
     )
 )
