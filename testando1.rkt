@@ -16,8 +16,10 @@
     (puzzle
         "a1"
         "ação a1"
-        (λ (inventario navegador)
+        (λ (inventario navegador mobilia)
             (displayln "a1!")
+            (displayln "Pressione Enter para continuar:")
+            (read-line)
             (loop-principal inventario navegador)
         )
     )

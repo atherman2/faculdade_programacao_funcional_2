@@ -12,7 +12,9 @@
             (inspecionar inventario navegador)
         ]
         [(equal? escolha "USAR")]
-        [(equal? escolha "VISI")]
+        [(equal? escolha "VISI")
+            (visitar inventario navegador)
+        ]
         [(equal? escolha "SAIR")
             (confirmar-sair inventario navegador)
         ]
@@ -107,7 +109,9 @@
     (cond
         [(equal? escolha "USAR")]
         [(equal? escolha "PEGA")]
-        [(equal? escolha "ACAO")]
+        [(equal? escolha "ACAO")
+            (seleciona-puzzle inventario navegador mobilia)
+        ]
         [(equal? escolha "SELE") (inspecionar inventario navegador)]
         [(equal? escolha "VOLT") (loop-principal inventario navegador)]
     )
@@ -125,7 +129,7 @@
 
 (define (seleciona-puzzle inventario navegador mobilia)
     (define escolha (menu-seleciona-puzzle mobilia))
-    (define puzzle-encontrado (encontra-puzzle mobilia escolha))
+    (define puzzle-encontrado (first (encontra-puzzle mobilia escolha)))
     (cond
         [(equal? escolha "VOLT") (inspecionar-mobilia inventario navegador mobilia)]
         [(empty? puzzle-encontrado)
