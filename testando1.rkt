@@ -38,19 +38,32 @@
     )
 )
 
-
-
-
-
 (define A
     (ambiente
+        "A"
+        "ambiente A"
+        (list m1)
+        "B"
+    )
+)
+
+(define B
+    (ambiente
+        "B"
+        "ambiente B"
+        (list m1)
+        "A"
     )
 )
 
 (define navegador0
     (navegador
         (list
+            A
+            B
         )
         "A"
     )
 )
+
+(loop-principal empty navegador0)
