@@ -3,7 +3,7 @@
 (require "definicoes.rkt")
 (require "principal.rkt")
 
-(struct navegador (ambientes ambiente-atual)#:transparent)
+(struct navegador (ambientes ambiente-atual))
 (struct ambiente (nome descricao mobilias conexoes))
 (struct puzzle (nome descricao funcao))
 (struct mobilia (nome descricao objetos puzzles))
