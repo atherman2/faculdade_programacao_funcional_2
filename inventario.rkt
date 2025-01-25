@@ -2,7 +2,7 @@
 
 
 
-(struct item ( nome descricao utilizacao )#:transparent)
+(struct objeto ( nome descricao utilizacao situacao-uso )#:transparent)
 
 (define (pegar_item item inventario) 
   (cons item inventario))

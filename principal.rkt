@@ -2,6 +2,8 @@
 
 (require "definicoes.rkt")
 
+(struct puzzle (nome descricao funcao))
+
 (define (loop-principal inventario navegador)
     (exibir-ambiente-atual navegador)
     (define escolha (menu-acoes-loop-principal))
@@ -65,7 +67,7 @@
 )
 
 (define (inspecionar-mobilia inventario navegador mobilia)
-    (exibir-mobilia mobilia)
+    (exibir_mobilia mobilia)
     (define escolha (string-upcase (menu-inspecionar-mobilia)))
     (cond
         [(equal? escolha "USAR")]

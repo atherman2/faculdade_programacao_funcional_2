@@ -1,7 +1,10 @@
 #lang racket
 
 (provide
-    navegador ambiente mobilia puzzle
+    navegador
+    ambiente
+    mobilia
+    puzzle
     visitar
     retorna-ambiente-atual
     encontra-conexao
