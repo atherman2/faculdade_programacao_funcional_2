@@ -41,23 +41,6 @@
     (loop-principal inventario navegador)
 )
 
-(define (exibir-ambiente ambiente)
-    (display "Você está em ")(display (ambiente-nome ambiente))(newline)
-    (display (ambiente-descricao ambiente))(newline)(newline)
-    (display "Nesta sala se encontram as seguintes mobílias:")(newline)
-    (map (λ (mobilia) (displayln (mobilia-nome mobilia))) (ambiente-mobilias ambiente))
-    (newline)
-    (display "É possível ir para as seguintes salas:")(newline)
-    (map displayln ambiente-conexoes)
-    (newline)
-)
-
-(define (exibir-ambiente-atual navegador)
-    (exibir-ambiente
-        (retorna-ambiente-atual navegador)
-    )
-)
-
 (define (menu-inspecionar inventario navegador)
     (define ambiente-atual (retorna-ambiente-atual navegador))
     (display "Qual mobília você deseja inspecionar?")(newline)
@@ -75,4 +58,23 @@
     )
 )
 
-(define (inspecionar inventario navegador mobilia))
+(define (inspecionar inventario navegador mobilia)
+
+)
+
+(define (exibir-ambiente ambiente)
+    (display "Você está em ")(display (ambiente-nome ambiente))(newline)
+    (display (ambiente-descricao ambiente))(newline)(newline)
+    (display "Nesta sala se encontram as seguintes mobílias:")(newline)
+    (map (λ (mobilia) (displayln (mobilia-nome mobilia))) (ambiente-mobilias ambiente))
+    (newline)
+    (display "É possível ir para as seguintes salas:")(newline)
+    (map displayln ambiente-conexoes)
+    (newline)
+)
+
+(define (exibir-ambiente-atual navegador)
+    (exibir-ambiente
+        (retorna-ambiente-atual navegador)
+    )
+)
