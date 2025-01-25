@@ -44,3 +44,10 @@
         (ambiente-conexoes ambiente)
     )
 )
+
+(define (encontra-mobilia ambiente nome-mobilia)
+    (filter
+        (λ (mobilia-da-lista) (equal? nome-mobilia (mobilia-nome mobilia-da-lista)))
+        (ambiente-mobilias)
+    )
+)
