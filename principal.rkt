@@ -57,7 +57,10 @@
     (cond
         [(equal? escolha "VOLT") (loop-principal inventario navegador)]
         [(empty? novo-navegador)
-            (display "Você digitou uma opção inválida!")(newline)(newline)
+            (display "Você digitou uma opção inválida!")(newline)
+            (display "Pressione Enter para continuar:")(newline)
+            (read-line)
+            (newline)
             (visitar inventario navegador)
         ]
         [else
@@ -80,8 +83,11 @@
     (cond
         [(equal? mobilia-selecionada "VOLT") (loop-principal inventario navegador)]
         [(empty? mobilia-encontrada)
-            (display "Você digitou uma opção inválida!")(newline)(newline)
-            (menu-inspecionar inventario navegador)
+            (display "Você digitou uma opção inválida!")(newline)
+            (display "Pressione Enter para continuar:")(newline)
+            (read-line)
+            (newline)
+            (inspecionar inventario navegador)
         ]
         [else (inspecionar-mobilia inventario navegador (first mobilia-encontrada))]
     )
@@ -168,14 +174,17 @@
 
 (define (seleciona-puzzle inventario navegador mobilia)
     (define escolha (menu-seleciona-puzzle mobilia))
-    (define puzzle-encontrado (first (encontra-puzzle mobilia escolha)))
+    (define puzzle-encontrado (encontra-puzzle mobilia escolha))
     (cond
         [(equal? escolha "VOLT") (inspecionar-mobilia inventario navegador mobilia)]
         [(empty? puzzle-encontrado)
-            (display "Você digitou uma opção inválida!")(newline)(newline)
+            (display "Você digitou uma opção inválida!")(newline)
+            (display "Pressione Enter para continuar:")(newline)
+            (read-line)
+            (newline)
             (seleciona-puzzle inventario navegador mobilia)
         ]
-        [else ((puzzle-funcao puzzle-encontrado) inventario navegador mobilia)]
+        [else ((puzzle-funcao (first puzzle-encontrado)) inventario navegador mobilia)]
     )
 )
 
