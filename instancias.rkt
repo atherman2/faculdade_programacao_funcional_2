@@ -112,10 +112,14 @@
   (newline)(display "Então o Resultado é: ")
 
   (cond [(> (soma (list(correto resposta1 "A") (correto resposta2 "D") (correto resposta3 "A") (correto resposta4 "C") (correto resposta5 "B"))) 2 )
-      (display "Você passou no teste, parabéns!")
+      (display "Você passou no teste, parabéns!")(newline)
+      (display "Pressione Enter para continuar:")(newline)
+      (read-line)(newline)
       (inspecionar-mobilia inventario navegador mobilia)
       ]
-      [else (display "Você é a vergonha da profissão, tente novamente")
+      [else (display "Você é a vergonha da profissão, tente novamente")(newline)
+      (display "Pressione Enter para continuar:")(newline)
+      (read-line)(newline)
       (inspecionar-mobilia inventario navegador mobilia)
       ]))
 
