@@ -26,7 +26,6 @@
     [(equal? escolha "VOLTAR") (codigo-secreto)]
     [else (dica)]))
         
-
     
 (define (Colocar-codigo)
   (pular-linhas)
@@ -121,18 +120,7 @@
           "Resposta Errada" (anagrama) ]))
 
 
-  ;; Aqui você pode adicionar mais perguntas e lógica conforme desejar.
-
-  
-  
-
 (define (pular-linhas) (newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline))
-
-
-
-     
-
-
 
 
 ;(anagrama)
