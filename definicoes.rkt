@@ -43,6 +43,13 @@
     )
 )
 
+(define (encontra-ambiente navegador nome-ambiente)
+    (filter
+        (λ (ambiente-da-lista) (equal? (ambiente-nome ambiente-da-lista) nome-abiente))
+        (naveagador-ambientes navegador)
+    )
+)
+
 (define (encontra-conexao ambiente nome-conexao)
     (filter
         (λ (conexao-da-lista) (equal? (string-upcase conexao-da-lista) nome-conexao))
@@ -84,6 +91,41 @@
             )
         )
         (mobilias)
+    )
+)
+
+(define (atualiza-mobilia navegador nova-mobilia nome-ambiente)
+    (define ambiente-da-mobilia (first (encontra-ambiente navegador nome-abiente)))
+    (define novo-ambiente
+        (struct-copy
+            ambiente
+            ambiente-da-mobilia
+            [ambiente-mobilias
+                (cons nova-mobilia
+                    (remove-mobilia-da-lista
+                        (ambiente-mobilias ambiente-da-mobilia)
+                        (mobilia-nome nova-mobilia)
+                    )
+                )
+            ]
+        )
+    )
+)
+
+(define (atualiza-ambiente navegador0 novo-ambiente)
+    (define novo-navegador
+        (struct-copy
+            navegador
+            navegador0
+            [naveagador-ambientes
+                (cons novo-ambiente
+                    (remove-ambiente-da-lista
+                        (navegador-ambientes navegador0)
+                        (ambiente-nome novo-ambiente)
+                    )
+                )
+            ]
+        )
     )
 )
 
