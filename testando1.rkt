@@ -2,6 +2,7 @@
 
 (require "definicoes.rkt")
 (require "principal.rkt")
+(require "instancias.rkt")
 
 (define o1
     (objeto
@@ -52,7 +53,7 @@
     )
 )
 
-(define navegador0
+(define navegador1
     (navegador
         (list
             A
@@ -61,5 +62,7 @@
         "A"
     )
 )
+
+; (loop-principal empty navegador1)
 
 (loop-principal empty navegador0)

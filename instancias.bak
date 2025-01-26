@@ -198,7 +198,7 @@
     )
 )
 
-(define puzzle-anagrama
+(definir puzzle-anagrama
     (puzzle
         "Ramanaga.exe"
         "Há um executável com um estranho nome no computador"

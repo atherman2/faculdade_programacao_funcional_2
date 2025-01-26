@@ -2,7 +2,9 @@
 
 (require "definicoes.rkt")
 
-(provide loop-principal)
+(provide
+    (all-defined-out)
+)
 
 (define (loop-principal inventario navegador)
     (exibir-ambiente-atual navegador)
@@ -139,7 +141,7 @@
                 (struct-copy
                     mobilia
                     mobilia0
-                    [mobilia-objetos empty]
+                    [objetos empty]
                 )
             )
             (define ambiente-atual (first (retorna-ambiente-atual navegador)))
@@ -156,9 +158,10 @@
                 (struct-copy
                     ambiente
                     ambiente-atual
-                    [ambiente-mobilias novo-mobilias]
+                    [mobilias novo-mobilias]
                 )
             )
+            empty
         ]
     )
 )
