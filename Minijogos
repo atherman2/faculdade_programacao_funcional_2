@@ -1,6 +1,7 @@
 #lang racket
 
-(define (Codigo-Secreto)
+(define (codigo-secreto)
+  (pular-linhas)
   (display "A TELA LIGOU! ")(newline)(newline)
   (display "TELA: BEM VINDO ")(newline)(newline)
   (display "CHARADA:")(newline)(newline)
@@ -13,11 +14,21 @@
   (define escolha (string-upcase (read-line)))
   (cond
     [(equal? escolha "VOLTAR") "recebe função de loop "]
-    [(equal? escolha "DICA") "Dica: Olhe para os começos!" ]))
+    [(equal? escolha "DICA") (dica)]
+    [else (codigo-secreto) ]))
     
-
+(define (dica)
+(pular-linhas)  
+(display "Dica: Olhe para os começos!")(newline)(newline)
+(display "Voltar - Volta para Charada")(newline)
+(define escolha (string-upcase (read-line)))
+(cond
+    [(equal? escolha "VOLTAR") (codigo-secreto)]
+    [else (dica)]))
+        
     
 (define (Colocar-codigo)
+  (pular-linhas)
   (display "Assim que você se aproxima, o monitor se acende automaticamente, exibindo uma tela minimalista e intrigante." )(newline)
   (display "Na tela, há apenas uma mensagem simples, centrada em um fundo escuro:")(newline)(newline)
   (display "-----Insira o código para continuar.------")(newline)(newline)
@@ -29,6 +40,7 @@
            
 ;;LORE DO MAPA:  Você está em um laboratório misterioso, cercado por computadores antigos, monitores piscando e pilhas de livros de programação espalhados pela mesa. O único som é o suave zumbido do sistema operacional sendo carregado em um dos computadores.
 (define (Trivia)
+  (pular-linhas)
   (display "Na frente, há uma tela de terminal com uma mensagem:")(newline)
   (display "Bem-vindo ao Laboratório do Programador.")(newline)
   (display "Para escapar, você precisa provar suas habilidades em Rachet.")(newline)
@@ -64,7 +76,7 @@
   (define resposta4 (string-upcase (read-line)))
   (newline)(display "Quinta Pergunta:")(newline)
   (display "Pergunta: Qual das funções abaixo é usada para aplicar uma função a cada item de uma lista em Racket?")(newline)
-  (display "A) for-each")(newline)
+  (display "A) cons")(newline)
   (display "B) map")(newline)
   (display "C) apply")(newline)
   (display "D) filter")(newline)
@@ -86,8 +98,9 @@
 
 ;LORE da sala: Você entra em uma sala vazia, com paredes brilhantes como telas de computador. Uma voz artificial ecoa
 (define (anagrama)
+(pular-linhas)  
 (display "Uma mesa aparece à sua frente com um teclado holográfico. Na tela, lê-se:")(newline)
-(display "O portal se abre com esta palavra: 'HECTAR'.")(newline)(newline)
+(display "O portal se abre com esta palavra: 'TACKER'.")(newline)(newline)
 (display "Resp - Responder o desafio")(newline)
 (display "Voltar - ")(newline)                       
 (display "Dica - Recebe dica")(newline)
@@ -95,20 +108,22 @@
 (cond
     [(equal? escolha "RESP") (Colocar-codigo2)]
     [(equal? escolha "VOLTAR") "recebe função de loop "]
-    [(equal? escolha "DICA") (display "Dica: ANA + GRAMA")(newline) ]))
+    [(equal? escolha "DICA") (display "Dica: ANA + GRAMA")(newline)(anagrama)]
+    [else (anagrama)]))
 
 (define (Colocar-codigo2)
+  (pular-linhas)
   (display "-----Insira a Resposta.------")(newline)(newline)
   (define resposta (string-upcase (read-line)))
-  (cond  [(equal? resposta "RACHET") (display "Resposta Correta!")]
+  (cond  [(equal? resposta "RACKET") (display "Resposta Correta!")]
          [else
-          "Resposta Errada"]))
+          "Resposta Errada" (anagrama) ]))
 
 
-
+(define (pular-linhas) (newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline))
 
 
 ;(anagrama)
 ;(Trivia)
-;(Codigo-Secreto)
+;(codigo-secreto)
 ;(Colocar-codigo)
