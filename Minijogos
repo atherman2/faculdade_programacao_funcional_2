@@ -1,0 +1,114 @@
+#lang racket
+
+(define (Codigo-Secreto)
+  (display "A TELA LIGOU! ")(newline)(newline)
+  (display "TELA: BEM VINDO ")(newline)(newline)
+  (display "CHARADA:")(newline)(newline)
+  (display "Códigos ocultos, desafios insistentes,")(newline)
+  (display "Geram oportunidades. ")(newline)
+  (display "Sistemas engenhosos, criam rumos,")(newline)
+  (display "Enigmas tecem ofícios.")(newline)(newline)
+  (display "Voltar - ")(newline)                       
+  (display "Dica - Recebe dica")(newline)
+  (define escolha (string-upcase (read-line)))
+  (cond
+    [(equal? escolha "VOLTAR") "recebe função de loop "]
+    [(equal? escolha "DICA") "Dica: Olhe para os começos!" ]))
+    
+
+    
+(define (Colocar-codigo)
+  (display "Assim que você se aproxima, o monitor se acende automaticamente, exibindo uma tela minimalista e intrigante." )(newline)
+  (display "Na tela, há apenas uma mensagem simples, centrada em um fundo escuro:")(newline)(newline)
+  (display "-----Insira o código para continuar.------")(newline)(newline)
+  (define resposta (string-upcase (read-line)))
+  (cond  [(equal? resposta "CODIGOSECRETO") (display "Resposta Correta!")]
+         [(equal? resposta "CODIGO SECRETO") (display "Resposta Correta!")]
+         [else
+          "Resposta Errada"]))
+           
+;;LORE DO MAPA:  Você está em um laboratório misterioso, cercado por computadores antigos, monitores piscando e pilhas de livros de programação espalhados pela mesa. O único som é o suave zumbido do sistema operacional sendo carregado em um dos computadores.
+(define (Trivia)
+  (display "Na frente, há uma tela de terminal com uma mensagem:")(newline)
+  (display "Bem-vindo ao Laboratório do Programador.")(newline)
+  (display "Para escapar, você precisa provar suas habilidades em Rachet.")(newline)
+  (display "Responda corretamente às perguntas de trivia sobre Rachet finalizar a sala do laboratório!")(newline)
+  (display "Para passar você terá que acertar 3 questões de 5!")(newline)(newline)
+  (display "A tela então apresenta a primeira pergunta:")(newline)
+  (display "Em Rachet, qual comando é utilizado para definir uma função?")(newline)
+  (display "A) (define (function))")(newline)
+  (display "B) (function create)")(newline)
+  (display "C) var")(newline)
+  (display "D) def")(newline)
+  (define resposta1 (string-upcase (read-line)))
+  (newline)(display "Segunda pergunta:")(newline)
+  (display "Em Rachet, há funções de alta ordem. Qual das opções não é uma delas?")(newline)
+  (display "A) (map ")(newline)
+  (display "B) (foldr ")(newline)
+  (display "C) (filter ")(newline)
+  (display "D) (cond ")(newline)
+  (define resposta2 (string-upcase (read-line)))
+  (newline)(display "Terceira Pergunta:")(newline)
+  (display "Qual das opções abaixo é usada para definir uma variável em Racket?")(newline)
+  (display "A) (define x 10)")(newline)
+  (display "B) let x = 10")(newline)
+  (display "C) var x = 10")(newline)
+  (display "D) const x = 10")(newline)
+  (define resposta3 (string-upcase (read-line)))
+  (newline)(display "Quarta Pergunta:")(newline)
+  (display "Qual das opções abaixo é usada para criar uma lista em Racket?")(newline)
+  (display "A) {1, 2, 3}")(newline)
+  (display "B) [1, 2, 3]")(newline)
+  (display "C) (list 1 2 3)")(newline)
+  (display "D) (array 1 2 3)")(newline)
+  (define resposta4 (string-upcase (read-line)))
+  (newline)(display "Quinta Pergunta:")(newline)
+  (display "Pergunta: Qual das funções abaixo é usada para aplicar uma função a cada item de uma lista em Racket?")(newline)
+  (display "A) for-each")(newline)
+  (display "B) map")(newline)
+  (display "C) apply")(newline)
+  (display "D) filter")(newline)
+  (define resposta5 (string-upcase (read-line)))
+  (newline)(display "Então o Resultado é: ")
+
+  (if (> (soma (list(correto resposta1 "A") (correto resposta2 "D") (correto resposta3 "A") (correto resposta4 "C") (correto resposta5 "B"))) 2 )
+      (display "Você passou no teste Parabens!")
+      (display "Você é a vergonha da profissão")))
+
+
+(define (correto resposta gabarito)
+     (cond
+       [(equal? resposta gabarito) 1]
+       [else 0]))
+  
+(define (soma resposta)
+  (foldr + 0 resposta))
+
+;LORE da sala: Você entra em uma sala vazia, com paredes brilhantes como telas de computador. Uma voz artificial ecoa
+(define (anagrama)
+(display "Uma mesa aparece à sua frente com um teclado holográfico. Na tela, lê-se:")(newline)
+(display "O portal se abre com esta palavra: 'HECTAR'.")(newline)(newline)
+(display "Resp - Responder o desafio")(newline)
+(display "Voltar - ")(newline)                       
+(display "Dica - Recebe dica")(newline)
+(define escolha (string-upcase (read-line)))
+(cond
+    [(equal? escolha "RESP") (Colocar-codigo2)]
+    [(equal? escolha "VOLTAR") "recebe função de loop "]
+    [(equal? escolha "DICA") (display "Dica: ANA + GRAMA")(newline) ]))
+
+(define (Colocar-codigo2)
+  (display "-----Insira a Resposta.------")(newline)(newline)
+  (define resposta (string-upcase (read-line)))
+  (cond  [(equal? resposta "RACHET") (display "Resposta Correta!")]
+         [else
+          "Resposta Errada"]))
+
+
+
+
+
+;(anagrama)
+;(Trivia)
+;(Codigo-Secreto)
+;(Colocar-codigo)
