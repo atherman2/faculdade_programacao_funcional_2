@@ -112,16 +112,27 @@
 )
 
 (define (inspecionar-mobilia inventario navegador mobilia)
-    (exibir_mobilia1 mobilia)
-    (define escolha (string-upcase (menu-inspecionar-mobilia)))
     (cond
-        [(equal? escolha "USAR")]
-        [(equal? escolha "PEGA")]
-        [(equal? escolha "ACAO")
-            (seleciona-puzzle inventario navegador mobilia)
+        [(and
+            (> (inv-trivia inventario) 0)
+            (> (inv-anagrama inventario) 0)
+        )
+            (newline)
+            "Parabéns! Você escapou da realidade virtual travada!"
         ]
-        [(equal? escolha "SELE") (inspecionar inventario navegador)]
-        [(equal? escolha "VOLT") (loop-principal inventario navegador)]
+        [else
+            (exibir_mobilia1 mobilia)
+            (define escolha (string-upcase (menu-inspecionar-mobilia)))
+            (cond
+                [(equal? escolha "USAR")]
+                [(equal? escolha "PEGA")]
+                [(equal? escolha "ACAO")
+                    (seleciona-puzzle inventario navegador mobilia)
+                ]
+                [(equal? escolha "SELE") (inspecionar inventario navegador)]
+                [(equal? escolha "VOLT") (loop-principal inventario navegador)]
+            )
+        ]
     )
 )
 

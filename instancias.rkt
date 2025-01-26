@@ -115,7 +115,14 @@
       (display "Você passou no teste, parabéns!")(newline)
       (display "Pressione Enter para continuar:")(newline)
       (read-line)(newline)
-      (inspecionar-mobilia inventario navegador mobilia)
+      (define novo-inventario
+        (struct-copy
+            inv
+            inventario
+            [trivia (add1 (inv-trivia inventario))]
+        )
+      )
+      (inspecionar-mobilia novo-inventario navegador mobilia)
       ]
       [else (display "Você é a vergonha da profissão, tente novamente")(newline)
       (display "Pressione Enter para continuar:")(newline)
@@ -167,7 +174,14 @@
             (display "Resposta Correta!")(newline)
             (display "Pressione Enter para continuar:")(newline)
             (read-line)
-            (inspecionar-mobilia inventario navegador mobilia)
+            (define novo-inventario
+                (struct-copy
+                    inv
+                    inventario
+                    [anagrama (add1 (inv-anagrama inventario))]
+                )
+            )
+            (inspecionar-mobilia novo-inventario navegador mobilia)
         ]
         [else
           (display "Resposta Errada")(newline)
@@ -274,5 +288,12 @@
             sala-escura
         )
         "Sala dos Pilares"
+    )
+)
+
+(define inv0
+    (inv
+        0
+        0
     )
 )

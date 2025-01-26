@@ -65,4 +65,4 @@
 
 ; (loop-principal empty navegador1)
 
-(loop-principal empty navegador0)
+(loop-principal inv0 navegador0)

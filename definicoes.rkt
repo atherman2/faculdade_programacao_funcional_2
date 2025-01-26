@@ -9,6 +9,7 @@
 (struct mobilia (nome descricao objetos puzzles))
 (struct puzzle (nome descricao funcao))
 (struct objeto ( nome descricao utilizacao situacao-uso )#:transparent)
+(struct inv (trivia anagrama))
 
 (define (novo-navegador-visitar navegador0 nome-destino)
     (define conexao-encontrada
