@@ -2,6 +2,7 @@
 
 (require "definicoes.rkt")
 
+(define (pular-linhas1) (newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline))
 (provide
     (all-defined-out)
 )
@@ -25,15 +26,16 @@
 )
 
 (define (menu-acoes-loop-principal)
+  
     (display "O que você desejá fazer?")(newline)(newline)
-    (display "INSP - Inspecionar uma mobília")(newline)
-    (display "USAR - Usar um item")(newline)   
+    (display "INSP - Inspecionar uma mobília")(newline)   
     (display "VISI - Visitar uma sala")(newline)
     (display "SAIR - Encerrar o escape room")(newline)
     (string-upcase (read-line))
 )
 
 (define (confirmar-sair inventario navegador)
+  (pular-linhas1)
     (display "Você deseja realmente sair do escape room?")(newline)
     (display "Todo progresso será perdido")(newline)
     (display "S - Confirmar")(newline)
@@ -47,6 +49,7 @@
 )
 
 (define (opcao-loop-principal-invalida inventario navegador)
+  (pular-linhas1)
     (display "Você digitou uma opção inválida!")(newline)(newline)
     (loop-principal inventario navegador)
 )
@@ -83,6 +86,7 @@
     (cond
         [(equal? mobilia-selecionada "VOLT") (loop-principal inventario navegador)]
         [(empty? mobilia-encontrada)
+         (pular-linhas1)
             (display "Você digitou uma opção inválida!")(newline)
             (display "Pressione Enter para continuar:")(newline)
             (read-line)
@@ -94,7 +98,8 @@
 )
 
 (define (menu-inspecionar ambiente-atual)
-    (display "Qual mobília você deseja inspecionar?")(newline)
+  (pular-linhas1)
+    (display "Qual mobília você deseja inspecionar?")(newline)(newline)
     (map
         (λ (mobilia-da-lista)
             (displayln
@@ -118,14 +123,12 @@
             (> (inv-anagrama inventario) 0)
         )
             (newline)
-            "Parabéns! Você escapou da realidade virtual travada!"
+            "Uma voz sintetizada declara:Parabéns, você provou ser capaz de desvendar os segredos do mundo virtual. A saída está aberta para você."
         ]
         [else
             (exibir_mobilia1 mobilia)
             (define escolha (string-upcase (menu-inspecionar-mobilia)))
-            (cond
-                [(equal? escolha "USAR")]
-                [(equal? escolha "PEGA")]
+            (cond            
                 [(equal? escolha "ACAO")
                     (seleciona-puzzle inventario navegador mobilia)
                 ]
@@ -137,9 +140,8 @@
 )
 
 (define (menu-inspecionar-mobilia)
-    (display "O que você desejá fazer?")(newline)(newline)
-    (display "USAR - Usar um objeto")(newline)   
-    (display "PEGA - Pegar os objetos da mobília")(newline)
+  (pular-linhas1)
+    (display "O que você desejá fazer nessa mobília?")(newline)(newline)    
     (display "ACAO - Fazer uma acao da mobília")(newline)
     (display "SELE - Voltar para a seleção de mobília")(newline)
     (display "VOLT - Sair da inspeção de mobílias")(newline)
@@ -200,6 +202,7 @@
 )
 
 (define (menu-seleciona-puzzle mobilia)
+  (pular-linhas1)
     (display "Qual ação você deseja realizar?")(newline)
     (map 
         (λ (puzzle-da-lista)
@@ -218,6 +221,7 @@
 )
 
 (define (exibir-ambiente ambiente)
+  (pular-linhas1)
     (display "Você está em ")(display (ambiente-nome ambiente))(newline)
     (display (ambiente-descricao ambiente))(newline)(newline)
     (display "Nesta sala se encontram as seguintes mobílias:")(newline)
@@ -270,4 +274,3 @@
                      (string-join (map objeto-nome (mobilia-objetos x)) ", ") "\n"
                      "Ações: " 
                      (string-join (map puzzle-nome (mobilia-puzzles x)) ", ") "\n\n"))]))
-
