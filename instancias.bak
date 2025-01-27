@@ -174,22 +174,6 @@
 
 (define (pular-linhas) (newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline))
 
-(define puzzle-exibir-codigo-secreto
-    (puzzle
-        "Charada no computador"
-        "Interagir com o computador - há um texto na tela"
-        codigo-secreto
-    )
-)
-
-(define puzzle-inserir-codigo-secreto
-    (puzzle
-        "Inserir código"
-        "Misteriosamente o computador pede para inserir um código"
-        Colocar-codigo
-    )
-)
-
 (define puzzle-trivia
     (puzzle
         "Trivia.exe"
