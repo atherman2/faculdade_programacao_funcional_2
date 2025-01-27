@@ -298,3 +298,9 @@
         "Sala dos Pilares"
     )
 )
+(define inv0
+    (inv
+        0
+        0
+    )
+)
