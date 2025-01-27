@@ -51,13 +51,27 @@
             (display "Resposta Correta!")(newline)
             (display "Pressione Enter para continuar:")(newline)
             (read-line)
-            (inspecionar-mobilia inventario navegador mobilia)
+            (define novo-inventario
+                (struct-copy
+                    inv
+                    inventario
+                    [codigo (add1 (inv-codigo inventario))]
+                )
+            )
+            (inspecionar-mobilia novo-inventario navegador mobilia)
         ]
         [(equal? resposta "CODIGO SECRETO")
             (display "Resposta Correta!")(newline)
             (display "Pressione Enter para continuar:")(newline)
             (read-line)
-            (inspecionar-mobilia inventario navegador mobilia)
+            (define novo-inventario
+                (struct-copy
+                    inv
+                    inventario
+                    [codigo (add1 (inv-codigo inventario))]
+                )
+            )
+            (inspecionar-mobilia novo-inventario navegador mobilia)
         ]
         [else
             (display "Resposta Errada!")(newline)

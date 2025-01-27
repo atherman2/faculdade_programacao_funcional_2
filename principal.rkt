@@ -35,7 +35,7 @@
 )
 
 (define (confirmar-sair inventario navegador)
-  (pular-linhas1)
+    (pular-linhas1)
     (display "Você deseja realmente sair do escape room?")(newline)
     (display "Todo progresso será perdido")(newline)
     (display "S - Confirmar")(newline)
@@ -49,12 +49,13 @@
 )
 
 (define (opcao-loop-principal-invalida inventario navegador)
-  (pular-linhas1)
+    (pular-linhas1)
     (display "Você digitou uma opção inválida!")(newline)(newline)
     (loop-principal inventario navegador)
 )
 
 (define (visitar inventario navegador)
+    (pular-linhas1)
     (define escolha (menu-visitar navegador))
     (define novo-navegador (novo-navegador-visitar navegador escolha))
     (cond
@@ -80,6 +81,7 @@
 )
 
 (define (inspecionar inventario navegador)
+    (pular-linhas1)
     (define ambiente-atual (first (retorna-ambiente-atual navegador)))
     (define mobilia-selecionada (menu-inspecionar ambiente-atual))
     (define mobilia-encontrada (encontra-mobilia ambiente-atual mobilia-selecionada))
@@ -98,7 +100,6 @@
 )
 
 (define (menu-inspecionar ambiente-atual)
-  (pular-linhas1)
     (display "Qual mobília você deseja inspecionar?")(newline)(newline)
     (map
         (λ (mobilia-da-lista)
@@ -117,6 +118,7 @@
 )
 
 (define (inspecionar-mobilia inventario navegador mobilia)
+    (pular-linhas1)
     (cond
         [(and
             (> (inv-trivia inventario) 0)
@@ -140,7 +142,6 @@
 )
 
 (define (menu-inspecionar-mobilia)
-  (pular-linhas1)
     (display "O que você desejá fazer nessa mobília?")(newline)(newline)    
     (display "ACAO - Fazer uma acao da mobília")(newline)
     (display "SELE - Voltar para a seleção de mobília")(newline)
@@ -186,6 +187,7 @@
 )
 
 (define (seleciona-puzzle inventario navegador mobilia)
+    (pular-linhas1)
     (define escolha (menu-seleciona-puzzle mobilia))
     (define puzzle-encontrado (encontra-puzzle mobilia escolha))
     (cond
@@ -202,7 +204,6 @@
 )
 
 (define (menu-seleciona-puzzle mobilia)
-  (pular-linhas1)
     (display "Qual ação você deseja realizar?")(newline)
     (map 
         (λ (puzzle-da-lista)
@@ -221,7 +222,6 @@
 )
 
 (define (exibir-ambiente ambiente)
-  (pular-linhas1)
     (display "Você está em ")(display (ambiente-nome ambiente))(newline)
     (display (ambiente-descricao ambiente))(newline)(newline)
     (display "Nesta sala se encontram as seguintes mobílias:")(newline)
