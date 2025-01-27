@@ -1,0 +1,1 @@
+("8.14" ta6nt ("071bbd2a99c18b701bb3df35b83adf50b3e075bc" . "254160ca2e5e6426dd80fc8cc7fcb755e39f0198") #"D:\\Development\\Repositories\\College\\fourth_semester\\faculdade_programacao_funcional_2\\definicoes.rkt" (collects #"drracket" #"private" #"drracket-errortrace-key.rkt") (collects #"racket" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))

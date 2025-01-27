@@ -1,6 +1,6 @@
 #lang racket
 
-(require "definicoes.rkt" "principal.rkt")
+(require "definicoes.rkt" "menus.rkt")
 (provide
     (all-defined-out)
 )
@@ -335,6 +335,7 @@
 
 (define inv0
     (inv
+        0
         0
         0
     )
