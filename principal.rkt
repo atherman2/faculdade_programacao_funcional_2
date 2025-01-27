@@ -1,276 +1,343 @@
 #lang racket
 
-(require "definicoes.rkt")
-
-(define (pular-linhas1) (newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline))
+(require "definicoes.rkt" "principal.rkt")
 (provide
     (all-defined-out)
 )
 
-(define (loop-principal inventario navegador)
-    (exibir-ambiente-atual navegador)
-    (define escolha (menu-acoes-loop-principal))
-    (cond
-        [(equal? escolha "INSP")
-            (inspecionar inventario navegador)
-        ]
-        [(equal? escolha "USAR")]
-        [(equal? escolha "VISI")
-            (visitar inventario navegador)
-        ]
-        [(equal? escolha "SAIR")
-            (confirmar-sair inventario navegador)
-        ]
-        [else (opcao-loop-principal-invalida inventario navegador)]
-    )
-)
-
-(define (menu-acoes-loop-principal)
-  
-    (display "O que você desejá fazer?")(newline)(newline)
-    (display "INSP - Inspecionar uma mobília")(newline)   
-    (display "VISI - Visitar uma sala")(newline)
-    (display "SAIR - Encerrar o escape room")(newline)
-    (string-upcase (read-line))
-)
-
-(define (confirmar-sair inventario navegador)
-    (pular-linhas1)
-    (display "Você deseja realmente sair do escape room?")(newline)
-    (display "Todo progresso será perdido")(newline)
-    (display "S - Confirmar")(newline)
-    (display "N - Cancelar")(newline)
-    (define escolha (string-upcase (read-line)))
-    (cond
-        [(equal? escolha "N")
-            (newline)(loop-principal inventario navegador)
-        ]
-    )
-)
-
-(define (opcao-loop-principal-invalida inventario navegador)
-    (pular-linhas1)
-    (display "Você digitou uma opção inválida!")(newline)(newline)
-    (loop-principal inventario navegador)
-)
-
-(define (visitar inventario navegador)
-    (pular-linhas1)
-    (define escolha (menu-visitar navegador))
-    (define novo-navegador (novo-navegador-visitar navegador escolha))
-    (cond
-        [(equal? escolha "VOLT") (loop-principal inventario navegador)]
-        [(empty? novo-navegador)
-            (display "Você digitou uma opção inválida!")(newline)
-            (display "Pressione Enter para continuar:")(newline)
-            (read-line)
-            (newline)
-            (visitar inventario navegador)
-        ]
-        [else
-            (loop-principal inventario novo-navegador)
-        ]
-    )
-)
-
-(define (menu-visitar navegador)
-    (display "Qual sala você deseja visitar?")(newline)
-    (exibir-ambiente-atual navegador)
-    (display "Ou insira VOLT para voltar")(newline)(newline)
-    (string-upcase (read-line))
-)
-
-(define (inspecionar inventario navegador)
-    (pular-linhas1)
-    (define ambiente-atual (first (retorna-ambiente-atual navegador)))
-    (define mobilia-selecionada (menu-inspecionar ambiente-atual))
-    (define mobilia-encontrada (encontra-mobilia ambiente-atual mobilia-selecionada))
-    (cond
-        [(equal? mobilia-selecionada "VOLT") (loop-principal inventario navegador)]
-        [(empty? mobilia-encontrada)
-         (pular-linhas1)
-            (display "Você digitou uma opção inválida!")(newline)
-            (display "Pressione Enter para continuar:")(newline)
-            (read-line)
-            (newline)
-            (inspecionar inventario navegador)
-        ]
-        [else (inspecionar-mobilia inventario navegador (first mobilia-encontrada))]
-    )
-)
-
-(define (menu-inspecionar ambiente-atual)
-    (display "Qual mobília você deseja inspecionar?")(newline)(newline)
-    (map
-        (λ (mobilia-da-lista)
-            (displayln
-                (string-append
-                    (mobilia-nome mobilia-da-lista)
-                    ": "
-                    (mobilia-descricao mobilia-da-lista)
-                )
-            )
-        )
-        (ambiente-mobilias ambiente-atual)
-    )
-    (display "Ou insira VOLT para voltar")(newline)
-    (string-upcase (read-line))
-)
-
-(define (inspecionar-mobilia inventario navegador mobilia)
-    (pular-linhas1)
-    (cond
-        [(and
-            (> (inv-trivia inventario) 0)
-            (> (inv-anagrama inventario) 0)
-        )
-            (newline)
-            "Uma voz sintetizada declara:Parabéns, você provou ser capaz de desvendar os segredos do mundo virtual. A saída está aberta para você."
-        ]
-        [else
-            (exibir_mobilia1 mobilia)
-            (define escolha (string-upcase (menu-inspecionar-mobilia)))
-            (cond            
-                [(equal? escolha "ACAO")
-                    (seleciona-puzzle inventario navegador mobilia)
-                ]
-                [(equal? escolha "SELE") (inspecionar inventario navegador)]
-                [(equal? escolha "VOLT") (loop-principal inventario navegador)]
-            )
-        ]
-    )
-)
-
-(define (menu-inspecionar-mobilia)
-    (display "O que você desejá fazer nessa mobília?")(newline)(newline)    
-    (display "ACAO - Fazer uma acao da mobília")(newline)
-    (display "SELE - Voltar para a seleção de mobília")(newline)
-    (display "VOLT - Sair da inspeção de mobílias")(newline)
-    (string-upcase (read-line))
-)
-
-(define (pega-objetos inventario navegador mobilia0)
-    (define objetos (mobilia-objetos mobilia0))
-    (cond
-        [(empty? objetos)
-            (displayln "Não há itens a serem pegos na mobília!")
-            (inspecionar-mobilia inventario navegador mobilia0)
-        ]
-        [else
-            (define nova-mobilia
-                (struct-copy
-                    mobilia
-                    mobilia0
-                    [objetos empty]
-                )
-            )
-            (define ambiente-atual (first (retorna-ambiente-atual navegador)))
-            (define mobilias (ambiente-mobilias ambiente-atual))
-            (define novo-mobilias
-                (cons nova-mobilia
-                    (remove-mobilia-da-lista
-                        mobilias
-                        (mobilia-nome mobilia0)
-                    )
-                )
-            )
-            (define novo-ambiente
-                (struct-copy
-                    ambiente
-                    ambiente-atual
-                    [mobilias novo-mobilias]
-                )
-            )
-            empty
-        ]
-    )
-)
-
-(define (seleciona-puzzle inventario navegador mobilia)
-    (pular-linhas1)
-    (define escolha (menu-seleciona-puzzle mobilia))
-    (define puzzle-encontrado (encontra-puzzle mobilia escolha))
-    (cond
-        [(equal? escolha "VOLT") (inspecionar-mobilia inventario navegador mobilia)]
-        [(empty? puzzle-encontrado)
-            (display "Você digitou uma opção inválida!")(newline)
-            (display "Pressione Enter para continuar:")(newline)
-            (read-line)
-            (newline)
-            (seleciona-puzzle inventario navegador mobilia)
-        ]
-        [else ((puzzle-funcao (first puzzle-encontrado)) inventario navegador mobilia)]
-    )
-)
-
-(define (menu-seleciona-puzzle mobilia)
-    (display "Qual ação você deseja realizar?")(newline)
-    (map 
-        (λ (puzzle-da-lista)
-            (displayln
-                (string-append
-                    (puzzle-nome puzzle-da-lista)
-                    ": "
-                    (puzzle-descricao puzzle-da-lista)
-                )
-            )
-        )
-        (mobilia-puzzles mobilia)
-    )
-    (display "Ou insira VOLT para voltar para a mobilia")(newline)(newline)
-    (string-upcase (read-line))
-)
-
-(define (exibir-ambiente ambiente)
-    (display "Você está em ")(display (ambiente-nome ambiente))(newline)
-    (display (ambiente-descricao ambiente))(newline)(newline)
-    (display "Nesta sala se encontram as seguintes mobílias:")(newline)
-    (map (λ (mobilia) (displayln (mobilia-nome mobilia))) (ambiente-mobilias ambiente))
-    (newline)
-    (display "É possível ir para as seguintes salas:")(newline)
-    (map displayln (ambiente-conexoes ambiente))
-    (newline)
-)
-
-(define (exibir-ambiente-atual navegador)
-    (exibir-ambiente
-        (first
-            (retorna-ambiente-atual navegador)
-        )
-    )
-)
-
-
-(define (exibir_mobilia1 x) 
+(define (codigo-secreto inventario navegador mobilia)
+  (pular-linhas)
+  (display "O Livro está aberto e está escrito: ")(newline)(newline)
+  (display "CHARADA:")(newline)(newline)
+  (display "Códigos ocultos, desafios insistentes,")(newline)
+  (display "Geram oportunidades. ")(newline)
+  (display "Sistemas engenhosos, criam rumos,")(newline)
+  (display "Enigmas tecem ofícios.")(newline)(newline)
+  (display "Resp - Para responder")(newline) 
+  (display "Voltar - Para sair do livro")(newline)                       
+  (display "Dica - Recebe dica")(newline)
+  (define escolha (string-upcase (read-line)))
   (cond
-    ;; Caso onde tem objetos mas não há puzzles
-    [(and (not (empty? (mobilia-objetos x))) (empty? (mobilia-puzzles x)))      
-     (display
-      (string-append "Nome: " (mobilia-nome x) "\n"
-                     "Descrição: " (mobilia-descricao x) "\n"
-                     "Objetos na Mobilia: " 
-                     (string-join (map objeto-nome (mobilia-objetos x)) ", ") "\n\n"))]
-
-    ;; Caso onde tem puzzles mas não há objetos
-    [(and (empty? (mobilia-objetos x)) (not (empty? (mobilia-puzzles x))))      
-     (display
-      (string-append "Nome: " (mobilia-nome x) "\n"
-                     "Descrição: " (mobilia-descricao x) "\n"
-                     "Ações: " 
-                     (string-join (map puzzle-nome (mobilia-puzzles x)) ", ") "\n\n"))]
-
-    ;; Caso onde não tem nem objetos nem puzzles
-    [(and (empty? (mobilia-objetos x)) (empty? (mobilia-puzzles x)))
-     (display
-      (string-append "Nome: " (mobilia-nome x) "\n"
-                     "Descrição: " (mobilia-descricao x) "\n\n"))]
-
-    ;; Caso padrão, em que há objetos e puzzles
+    [(equal? escolha "RESP")
+        (Colocar-codigo inventario navegador mobilia)]
+    [(equal? escolha "VOLTAR")
+        (inspecionar-mobilia inventario navegador mobilia)
+    ]
+    [(equal? escolha "DICA") (dica inventario navegador mobilia)]
     [else
-     (display
-      (string-append "Nome: " (mobilia-nome x) "\n"
-                     "Descrição: " (mobilia-descricao x) "\n"
-                     "Objetos na Mobilia: " 
-                     (string-join (map objeto-nome (mobilia-objetos x)) ", ") "\n"
-                     "Ações: " 
-                     (string-join (map puzzle-nome (mobilia-puzzles x)) ", ") "\n\n"))]))
+        (display "Você inseriu uma opção inválida!")(newline)
+        (display "Pressione Enter para continuar:")(newline)
+        (read-line)
+        (codigo-secreto inventario navegador mobilia)
+    ]))
+    
+(define (dica inventario navegador mobilia)
+(pular-linhas)  
+(display "Dica: Olhe para os começos!")(newline)(newline)
+(display "Voltar - Volta para Charada")(newline)
+(define escolha (string-upcase (read-line)))
+(cond
+    [(equal? escolha "VOLTAR")
+        (codigo-secreto inventario navegador mobilia)
+    ]
+    [else (dica)]))
+        
+    
+(define (Colocar-codigo inventario navegador mobilia)
+  (pular-linhas)
+  (display "Escreva aqui a resposta:")(newline)(newline)
+  (define resposta (string-upcase (read-line)))
+  (cond [(equal? resposta "CODIGOSECRETO")
+            (display "Resposta Correta!")(newline)
+            (display "Pressione Enter para continuar:")(newline)
+            (read-line)
+            (define novo-inventario
+                (struct-copy
+                    inv
+                    inventario
+                    [codigo (add1 (inv-codigo inventario))]
+                )
+            )
+            (inspecionar-mobilia novo-inventario navegador mobilia)
+        ]
+        [(equal? resposta "CODIGO SECRETO")
+            (display "Resposta Correta!")(newline)
+            (display "Pressione Enter para continuar:")(newline)
+            (read-line)
+            (define novo-inventario
+                (struct-copy
+                    inv
+                    inventario
+                    [codigo (add1 (inv-codigo inventario))]
+                )
+            )
+            (inspecionar-mobilia novo-inventario navegador mobilia)
+        ]
+        [else
+            (display "Resposta Errada!")(newline)
+            (display "Pressione Enter para continuar:")(newline)
+            (read-line)
+            (Colocar-codigo inventario navegador mobilia)
+        ]))
+           
+;;LORE DO MAPA:  Você está em um laboratório misterioso, cercado por computadores antigos, monitores piscando e pilhas de livros de programação espalhados pela mesa. O único som é o suave zumbido do sistema operacional sendo carregado em um dos computadores.
+(define (trivia inventario navegador mobilia)
+  (pular-linhas)
+  (display "Na frente, há uma tela de terminal com uma mensagem:")(newline)
+  (display "Bem-vindo ao Laboratório do Programador.")(newline)
+  (display "Para escapar, você precisa provar suas habilidades em Rachet.")(newline)
+  (display "Responda corretamente às perguntas de trivia sobre Rachet finalizar a sala do laboratório!")(newline)
+  (display "Para passar você terá que acertar 3 questões de 5!")(newline)(newline)
+  (display "A tela então apresenta a primeira pergunta:")(newline)
+  (display "Em Rachet, qual comando é utilizado para definir uma função?")(newline)
+  (display "A) (define (function))")(newline)
+  (display "B) (function create)")(newline)
+  (display "C) var")(newline)
+  (display "D) def")(newline)
+  (define resposta1 (string-upcase (read-line)))
+  (newline)(display "Segunda pergunta:")(newline)
+  (display "Em Rachet, há funções de alta ordem. Qual das opções não é uma delas?")(newline)
+  (display "A) (map ")(newline)
+  (display "B) (foldr ")(newline)
+  (display "C) (filter ")(newline)
+  (display "D) (cond ")(newline)
+  (define resposta2 (string-upcase (read-line)))
+  (newline)(display "Terceira Pergunta:")(newline)
+  (display "Qual das opções abaixo é usada para definir uma variável em Racket?")(newline)
+  (display "A) (define x 10)")(newline)
+  (display "B) let x = 10")(newline)
+  (display "C) var x = 10")(newline)
+  (display "D) const x = 10")(newline)
+  (define resposta3 (string-upcase (read-line)))
+  (newline)(display "Quarta Pergunta:")(newline)
+  (display "Qual das opções abaixo é usada para criar uma lista em Racket?")(newline)
+  (display "A) {1, 2, 3}")(newline)
+  (display "B) [1, 2, 3]")(newline)
+  (display "C) (list 1 2 3)")(newline)
+  (display "D) (array 1 2 3)")(newline)
+  (define resposta4 (string-upcase (read-line)))
+  (newline)(display "Quinta Pergunta:")(newline)
+  (display "Pergunta: Qual das funções abaixo é usada para aplicar uma função a cada item de uma lista em Racket?")(newline)
+  (display "A) cons")(newline)
+  (display "B) map")(newline)
+  (display "C) apply")(newline)
+  (display "D) filter")(newline)
+  (define resposta5 (string-upcase (read-line)))
+  (newline)(display "Então o Resultado é: ")
+
+  (cond [(> (soma (list(correto resposta1 "A") (correto resposta2 "D") (correto resposta3 "A") (correto resposta4 "C") (correto resposta5 "B"))) 2 )
+      (display "Você passou no teste, parabéns!")(newline)
+      (display "Pressione Enter para continuar:")(newline)
+      (read-line)(newline)
+      (define novo-inventario
+        (struct-copy
+            inv
+            inventario
+            [trivia (add1 (inv-trivia inventario))]
+        )
+      )
+      (inspecionar-mobilia novo-inventario navegador mobilia)
+      ]
+      [else (display "Você é a vergonha da profissão, tente novamente")(newline)
+      (display "Pressione Enter para continuar:")(newline)
+      (read-line)(newline)
+      (inspecionar-mobilia inventario navegador mobilia)
+      ]))
+
+
+(define (correto resposta gabarito)
+     (cond
+       [(equal? resposta gabarito) 1]
+       [else 0]))
+  
+(define (soma resposta)
+  (foldr + 0 resposta))
+
+;LORE da sala: Você entra em uma sala vazia, com paredes brilhantes como telas de computador. Uma voz artificial ecoa
+(define (anagrama inventario navegador mobilia)
+(pular-linhas)  
+(display "As engrenagens começam a girar....")(newline)
+(display "Quando você olha para tela está escrito: 'TACKER'.")(newline)(newline)
+(display "Resp - Responder o desafio")(newline)
+(display "Voltar - Sai do desafio" )(newline)                       
+(display "Dica - Recebe dica")(newline)
+(define escolha (string-upcase (read-line)))
+(cond
+    [(equal? escolha "RESP")
+        (Colocar-codigo2 inventario navegador mobilia)
+    ]
+    [(equal? escolha "VOLTAR")
+        (inspecionar-mobilia inventario navegador mobilia)
+    ]
+    [(equal? escolha "DICA")
+        (display "Dica: ANA + GRAMA")(newline)
+        (display "Pressione Enter para continuar:")(newline)
+        (read-line)
+        (anagrama inventario navegador mobilia)
+    ]
+    [else 
+        (display "Você inseriu uma opção inválida!")(newline)
+        (anagrama inventario navegador mobilia)
+    ]))
+
+(define (Colocar-codigo2 inventario navegador mobilia)
+  (pular-linhas)
+  (display "-----Insira a Resposta.------")(newline)(newline)
+  (define resposta (string-upcase (read-line)))
+  (cond [(equal? resposta "RACKET")
+            (display "Resposta Correta!")(newline)
+            (display "Pressione Enter para continuar:")(newline)
+            (read-line)
+            (define novo-inventario
+                (struct-copy
+                    inv
+                    inventario
+                    [anagrama (add1 (inv-anagrama inventario))]
+                )
+            )
+            (inspecionar-mobilia novo-inventario navegador mobilia)
+        ]
+        [else
+          (display "Resposta Errada")(newline)
+          (display "Pressione Enter para continuar:")(newline)
+          (read-line)
+          (anagrama inventario navegador mobilia)
+        ]))
+
+(define (pular-linhas) (newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline))
+
+(define puzzle-exibir-codigo-secreto
+    (puzzle
+        "Charada no computador"
+        "Interagir com o computador - há um texto na tela"
+        codigo-secreto
+    )
+)
+
+(define puzzle-inserir-codigo-secreto
+    (puzzle
+        "Inserir código"
+        "Misteriosamente o computador pede para inserir um código"
+        Colocar-codigo
+    )
+)
+
+(define puzzle-poema
+  (puzzle
+      "Ler livro"
+      ""
+      codigo-secreto
+    )
+)
+
+
+
+(define puzzle-trivia
+    (puzzle
+        "Trivia.exe"
+        "No canto da tela há um executável com um nome auto-explicativo"
+        trivia
+    )
+)
+
+(define puzzle-anagrama
+    (puzzle
+        "Desafio da engrenagem"
+        "Tente descobrir o desafio para provar seu conhecimento"
+        anagrama
+    )
+)
+
+(define maquina-engrenagem
+  (mobilia
+      "Maquina"
+      "Uma maquina ligada a uma tela"
+      empty
+      (list puzzle-anagrama)
+    )
+)
+
+(define computador
+    (mobilia
+        "Computador"
+        "Um velho computador velho no canto da sala"
+        empty
+        (list puzzle-trivia)
+    )
+)
+
+(define livro
+  (mobilia
+   "Livro Mágico"
+   "Livro antigo que voa no meio da sala"
+   empty
+   (list puzzle-poema)
+   )
+)
+
+(define sala-pilares
+    (ambiente
+        "Sala dos Pilares"
+        "Uma sala ampla, iluminada por uma luz azul-neon que emana de pilares flutuantes. Cada pilar apresenta um símbolo diferente: uma engrenagem, um pergaminho, e um computador. "
+        empty
+        (list "Sala da Engrenagem" "Sala do Pergaminho" "Sala do Computador")
+    )
+)
+
+(define sala-engrenagem
+    (ambiente
+        "Sala da Engrenagem"
+        "A sala é repleta de engrenagens gigantescas que giram sem parar. No centro, há uma máquina com uma tela piscando."
+        (list maquina-engrenagem)
+        (list "Sala dos Pilares")
+    )
+)
+
+(define sala-pergaminho
+    (ambiente
+        "Sala do Pergaminho"
+        "Uma sala com paredes de pergaminho, onde palavras aparecem magicamente. No centro, há um livro aberto, exibindo um poema enigmático."
+        (list livro)
+        (list "Sala dos Pilares")
+    )
+)
+
+(define sala-computador
+    (ambiente
+        "Sala do Computador"
+        "Você está em uma sala, cercado por computadores antigos, monitores piscando e pilhas de livros de programação espalhados pela mesa."
+        (list computador)
+        (list "Sala dos Pilares" )
+    )
+)
+
+(define sala-escura
+    (ambiente
+        "Sala Escura"
+        "Uma sala em que poucas é possível enxergar poucas coisas devido à escuridão"
+        empty
+        (list "Sala do Baú" "Sala do Computador")
+    )
+)
+
+(define navegador0
+    (navegador
+        (list
+            sala-pilares
+            sala-engrenagem
+            sala-pergaminho
+            sala-computador
+            sala-escura
+        )
+        "Sala dos Pilares"
+    )
+)
+
+(define inv0
+    (inv
+        0
+        0
+    )
+)
+
+(loop-principal inv0 navegador0)
