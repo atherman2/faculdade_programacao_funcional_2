@@ -1,5 +1,4 @@
 #lang racket
-
 (require "definicoes.rkt" "principal.rkt")
 (provide
     (all-defined-out)
@@ -142,10 +141,10 @@
 ;LORE da sala: Você entra em uma sala vazia, com paredes brilhantes como telas de computador. Uma voz artificial ecoa
 (define (anagrama inventario navegador mobilia)
 (pular-linhas)  
-(display "Uma mesa aparece à sua frente com um teclado holográfico. Na tela, lê-se:")(newline)
-(display "O portal se abre com esta palavra: 'TACKER'.")(newline)(newline)
+(display "As engrenagens começam a girar....")(newline)
+(display "Quando você olha para tela está escrito: 'TACKER'.")(newline)(newline)
 (display "Resp - Responder o desafio")(newline)
-(display "Voltar - ")(newline)                       
+(display "Voltar - Sai do desafio" )(newline)                       
 (display "Dica - Recebe dica")(newline)
 (define escolha (string-upcase (read-line)))
 (cond
@@ -190,7 +189,7 @@
           (anagrama inventario navegador mobilia)
         ]))
 
-(define (pular-linhas) (newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline))
+(define (pular-linhas) (newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline)(newline))
 
 (define puzzle-exibir-codigo-secreto
     (puzzle
@@ -218,54 +217,63 @@
 
 (define puzzle-anagrama
     (puzzle
-        "Ramanaga.exe"
-        "Há um executável com um estranho nome no computador"
+        "Desafio da engrenagem"
+        "Tente descobrir o desafio para provar seu conhecimento"
         anagrama
+    )
+)
+
+(define maquina-engrenagem
+  (mobilia
+      "Maquina"
+      "Uma maquina ligada a uma tela"
+      empty
+      (list puzzle-anagrama)
     )
 )
 
 (define computador
     (mobilia
         "Computador"
-        "Um velho computador no canto da sala"
+        "Um velho computador velho no canto da sala"
         empty
-        (list puzzle-trivia puzzle-anagrama)
+        (list puzzle-trivia)
     )
 )
 
 (define sala-pilares
     (ambiente
         "Sala dos Pilares"
-        "Uma sala em que se encontram pilares com totens digitais"
+        "Uma sala ampla, iluminada por uma luz azul-neon que emana de pilares flutuantes. Cada pilar apresenta um símbolo diferente: uma engrenagem, um pergaminho, e um computador. "
         empty
-        (list "Galeria" "Sala do Baú")
+        (list "Sala da Engrenagem" "Sala do Pergaminho" "Sala do Computador")
     )
 )
 
-(define galeria
+(define sala-engrenagem
     (ambiente
-        "Galeria"
-        "Uma sala repleta de fotos digitais"
-        empty
+        "Sala da Engrenagem"
+        "A sala é repleta de engrenagens gigantescas que giram sem parar. No centro, há uma máquina com uma tela piscando."
+        (list maquina-engrenagem)
         (list "Sala dos Pilares")
     )
 )
 
-(define sala-bau
+(define sala-pergaminho
     (ambiente
-        "Sala do Baú"
-        "Uma sala com uma baú ao lado da porta"
-        empty
-        (list "Sala dos Pilares" "Sala do Computador" "Sala Escura")
+        "Sala do Pergaminho"
+        "Uma sala com paredes de pergaminho, onde palavras aparecem magicamente. No centro, há um livro aberto, exibindo um poema enigmático."
+        (list livro)
+        (list "Sala dos Pilares")
     )
 )
 
 (define sala-computador
     (ambiente
         "Sala do Computador"
-        "Uma sala com um computador no canto"
+        "Você está em uma sala, cercado por computadores antigos, monitores piscando e pilhas de livros de programação espalhados pela mesa."
         (list computador)
-        (list "Sala do Baú" "Sala Escura")
+        (list "Sala dos Pilares" )
     )
 )
 
@@ -282,18 +290,11 @@
     (navegador
         (list
             sala-pilares
-            galeria
-            sala-bau
+            sala-engrenagem
+            sala-pergaminho
             sala-computador
             sala-escura
         )
         "Sala dos Pilares"
-    )
-)
-
-(define inv0
-    (inv
-        0
-        0
     )
 )
