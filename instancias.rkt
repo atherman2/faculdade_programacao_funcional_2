@@ -1,4 +1,5 @@
 #lang racket
+
 (require "definicoes.rkt" "principal.rkt")
 (provide
     (all-defined-out)
@@ -6,17 +7,19 @@
 
 (define (codigo-secreto inventario navegador mobilia)
   (pular-linhas)
-  (display "A TELA LIGOU! ")(newline)(newline)
-  (display "TELA: BEM VINDO ")(newline)(newline)
+  (display "O Livro está aberto e está escrito: ")(newline)(newline)
   (display "CHARADA:")(newline)(newline)
   (display "Códigos ocultos, desafios insistentes,")(newline)
   (display "Geram oportunidades. ")(newline)
   (display "Sistemas engenhosos, criam rumos,")(newline)
   (display "Enigmas tecem ofícios.")(newline)(newline)
-  (display "Voltar - ")(newline)                       
+  (display "Resp - Para responder")(newline) 
+  (display "Voltar - Para sair do livro")(newline)                       
   (display "Dica - Recebe dica")(newline)
   (define escolha (string-upcase (read-line)))
   (cond
+    [(equal? escolha "RESP")
+        (Colocar-codigo inventario navegador mobilia)]
     [(equal? escolha "VOLTAR")
         (inspecionar-mobilia inventario navegador mobilia)
     ]
@@ -42,9 +45,7 @@
     
 (define (Colocar-codigo inventario navegador mobilia)
   (pular-linhas)
-  (display "Assim que você se aproxima, o monitor se acende automaticamente, exibindo uma tela minimalista e intrigante." )(newline)
-  (display "Na tela, há apenas uma mensagem simples, centrada em um fundo escuro:")(newline)(newline)
-  (display "-----Insira o código para continuar.------")(newline)(newline)
+  (display "Escreva aqui a resposta:")(newline)(newline)
   (define resposta (string-upcase (read-line)))
   (cond [(equal? resposta "CODIGOSECRETO")
             (display "Resposta Correta!")(newline)
@@ -207,6 +208,16 @@
     )
 )
 
+(define puzzle-poema
+  (puzzle
+      "Ler livro"
+      ""
+      codigo-secreto
+    )
+)
+
+
+
 (define puzzle-trivia
     (puzzle
         "Trivia.exe"
@@ -239,6 +250,15 @@
         empty
         (list puzzle-trivia)
     )
+)
+
+(define livro
+  (mobilia
+   "Livro Mágico"
+   "Livro antigo que voa no meio da sala"
+   empty
+   (list puzzle-poema)
+   )
 )
 
 (define sala-pilares
